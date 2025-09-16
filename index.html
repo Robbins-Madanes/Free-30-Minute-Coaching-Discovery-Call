@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robbins-Madanes Training</title>
+    <!-- Favicon link -->
+    <link rel="icon" type="image/png" href="images/favicon.svg">
+    <!-- Use Lato and Karla fonts from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+   <style>
+        /* CSS for smooth animations on scroll */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.8s cubic-bezier(0.65, 0.05, 0.36, 1) forwards;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .animate-scaleIn {
+            animation: scaleIn 0.8s cubic-bezier(0.65, 0.05, 0.36, 1) forwards;
+        }
+
+        /* Custom styles for sections and buttons to make them more "premium" */
+        .btn-primary {
+            @apply bg-[#4DABCC] text-white font-bold py-4 px-10 rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl;
+        }
+        .btn-primary:active {
+            @apply scale-100 shadow-inner;
+        }
+
+        /* Update btn-primary for a more "actual button" look */
+        .btn-primary {
+            /* Existing styles */
+            @apply bg-[#4DABCC] text-white font-bold py-4 px-10 rounded-full transition-all duration-300 ease-in-out transform;
+            /* New styles for a 3D effect */
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08), inset 0 2px 4px rgba(255,255,255,0.4), inset 0 -2px 4px rgba(0,0,0,0.1);
+        }
+        .btn-primary:hover {
+            @apply scale-105;
+            box-shadow: 0 6px 10px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.1), inset 0 2px 4px rgba(255,255,255,0.6), inset 0 -2px 4px rgba(0,0,0,0.15);
+        }
+        .btn-primary:active {
+            @apply scale-100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.08), inset 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        /* Special styling for specific buttons to match header button */
+        section.relative.pt-32 .btn-primary,
+        section.py-24 a.btn-primary[href="#book-call"] {
+            background-color: #17494D !important;
+            color: white !important;
+            font-weight: bold !important;
+            padding: 0.75rem 2rem !important;
+            border-radius: 9999px !important;
+            font-size: 1.125rem !important;
+            text-transform: uppercase !important;
+            transition: all 200ms ease-in-out !important;
+            border: none !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+            cursor: pointer !important;
+            display: inline-block !important;
+        }
+        
+        section.relative.pt-32 .btn-primary:hover,
+        section.py-24 a.btn-primary[href="#book-call"]:hover {
+            background-color: #0f3538 !important;
+            transform: scale(1.05) !important;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
+        }
+        
+        section.relative.pt-32 .btn-primary:active,
+        section.py-24 a.btn-primary[href="#book-call"]:active {
+            background-color: #0a2426 !important;
+            transform: scale(0.98) !important;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2) !important;
+        }
+
+        .btn-secondary {
+            @apply bg-[#17494D] text-white font-bold py-4 px-10 rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl;
+        }
+        .btn-secondary:active {
+            @apply scale-100 shadow-inner;
+        }
+
+        /* Utility class to delay animations */
+        .animation-delay-200 { animation-delay: 0.2s; }
+        .animation-delay-400 { animation-delay: 0.4s; }
+        .animation-delay-600 { animation-delay: 0.6s; }
+        .animation-delay-800 { animation-delay: 0.8s; }
+        .animation-delay-1000 { animation-delay: 1s; }
+        .animation-delay-1200 { animation-delay: 1.2s; }
+        .animation-delay-1400 { animation-delay: 1.4s; }
+        .animation-delay-1600 { animation-delay: 1.6s; }
+        .animation-delay-1800 { animation-delay: 1.8s; }
+        .animation-delay-2000 { animation-delay: 2s; }
+        
+        /* Enhanced Testimonial Styles */
+        .testimonial-carousel {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .testimonial-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonial-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #4DABCC, #17494D, #4DABCC);
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite linear;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.08) 100%);
+        }
+
+        .testimonial-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+        }
+
+        .quote-icon {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            opacity: 0.3;
+        }
+
+        .testimonial-avatar {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin: 1rem auto 1.5rem;
+        }
+
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-cover: cover;
+            border: 3px solid #4DABCC;
+            position: relative;
+            z-index: 2;
+        }
+
+        .avatar-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle, #4DABCC 0%, transparent 70%);
+            opacity: 0.5;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.2; }
+        }
+
+        .testimonial-text {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.95);
+            margin-bottom: 2rem;
+            flex-grow: 1;
+            text-align: center;
+            font-style: italic;
+            position: relative;
+            font-family: 'Karla', sans-serif;
+        }
+
+        .testimonial-footer {
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 1rem;
+        }
+
+        .testimonial-name {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 0.25rem;
+            font-family: 'Lato', sans-serif;
+        }
+
+        .testimonial-role {
+            font-size: 0.875rem;
+            color: #4DABCC;
+            margin-bottom: 0.75rem;
+            font-family: 'Karla', sans-serif;
+        }
+
+        .rating {
+            display: flex;
+            justify-content: center;
+            gap: 0.25rem;
+        }
+
+        .star {
+            color: #FDBA74;
+            font-size: 1.25rem;
+            transition: transform 0.2s;
+        }
+
+        .star:hover {
+            transform: scale(1.2);
+        }
+
+        /* Enhanced Carousel Navigation */
+        .carousel-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+
+        .carousel-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.2);
+            color: #4DABCC;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-btn:hover {
+            background: rgba(77,171,204,0.2);
+            border-color: #4DABCC;
+            transform: scale(1.1);
+            color: white;
+        }
+
+        .carousel-btn:active {
+            transform: scale(0.95);
+        }
+
+        .carousel-dots {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .testimonial-track {
+            display: flex;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            will-change: transform;
+        }
+
+        .testimonial-slide {
+            flex-shrink: 0;
+            width: 100%;
+            padding: 0 1rem;
+            opacity: 0.4;
+            transition: opacity 0.6s ease;
+        }
+
+        .testimonial-slide.active {
+            opacity: 1;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .dot:hover {
+            background: rgba(255,255,255,0.5);
+            transform: scale(1.2);
+        }
+
+        .dot.active {
+            background: #4DABCC;
+            width: 32px;
+            border-radius: 20px;
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        /* Responsive adjustments for testimonials */
+        @media (min-width: 768px) {
+            .testimonial-slide {
+                width: 33.333%;
+                padding: 0 1rem;
+            }
+            
+            .testimonial-card {
+                padding: 2.5rem;
+            }
+            
+            .testimonial-track {
+                padding: 0 10%;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .testimonial-text {
+                font-size: 1rem;
+            }
+            
+            .carousel-nav {
+                gap: 0.5rem;
+            }
+            
+            .carousel-btn {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        /* Touch/swipe support for mobile */
+        @media (pointer: coarse) {
+            .testimonial-carousel {
+                cursor: grab;
+            }
+            
+            .testimonial-carousel:active {
+                cursor: grabbing;
+            }
+        }
+
+        /* Legacy carousel styles (kept for compatibility) */
+        .carousel-button {
+            @apply p-4 rounded-full bg-white bg-opacity-70 shadow-lg transition-all hover:bg-opacity-100 hover:scale-110;
+        }
+        
+        /* FAQ Accordion styles */
+        .accordion-item {
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+            background: white;
+            transition: box-shadow 0.3s ease;
+        }
+        .accordion-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .accordion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            cursor: pointer;
+            font-weight: bold;
+            color: #17494D;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+            padding: 0 1.5rem;
+            color: #4A5568;
+        }
+        .accordion-content.active {
+            max-height: 500px; /* A value large enough to accommodate the content */
+            padding: 1.5rem;
+        }
+        .accordion-content p {
+            line-height: 1.6;
+        }
+        .accordion-icon {
+            transition: transform 0.3s ease;
+        }
+        .accordion-header.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        lato: ['Lato', 'sans-serif'],
+                        karla: ['Karla', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary-blue': '#4DABCC',
+                        'secondary-teal': '#17494D',
+                        'dark-gray': '#121212',
+                        'light-gray': '#f0f4f8',
+                        'accent-orange': '#FDBA74',
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-light-gray font-lato text-dark-gray overflow-x-hidden">
+
+    <!-- Header -->
+    <header class="bg-white bg-opacity-90 backdrop-blur-lg shadow-xl fixed top-0 left-0 w-full z-50">
+        <!-- Added flex-col and items-center for mobile, with md:flex-row and md:justify-between for larger screens -->
+        <div class="container mx-auto flex flex-col items-center md:flex-row md:justify-between py-6 px-6 md:px-12">
+            <!-- Added a div to contain the logo and text for centering -->
+            <div class="flex flex-col items-center md:flex-row md:items-center space-x-3 mb-4 md:mb-0">
+                <!-- Robbins-Madanes Training Logo and Text -->
+                <div class="flex items-center space-x-2">
+                  <img src="images/favicon.svg" alt="Your Logo" class="w-16 h-16 rounded-full">
+                    <!-- The following div has been removed as it was the empty grey circle placeholder -->
+                    <!-- <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center text-gray-400">
+                    </div> -->
+                    <!-- Text -->
+                    <div class="flex flex-col">
+                        <span class="text-2xl md:text-3xl font-black text-dark-gray font-lato leading-none">ROBBINS MADANES</span>
+                        <span class="text-lg md:text-xl text-gray-600 font-karla leading-none">TRAINING</span>
+                    </div>
+                </div>
+            </div>
+            <!-- The updated button -->
+            <button class="bg-[#4DABCC] text-white py-2 px-6 rounded-full font-bold transition-transform duration-200 hover:scale-105">BOOK YOUR FREE CALL NOW</button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 min-h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 bg-[#4DABCC] opacity-95"></div>
+        <div class="relative container mx-auto px-6 md:px-12 text-center text-white z-10 py-16">
+            <!-- Headline from document -->
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-6 animate-fadeIn">
+                AWAKEN THE COACH WITHIN:
+                <br class="hidden md:inline">
+                <span class="font-black text-secondary-teal">30-MINUTE DISCOVERY SESSION</span>
+            </h1>
+            <!-- Sub-headline from document -->
+            <h2 class="text-xl md:text-3xl lg:text-4xl font-light mb-8 max-w-4xl mx-auto animate-fadeIn animation-delay-200 font-karla">
+                From Tony’s Stage to Your Skillset—with Cloe Madanes
+            </h2>
+            <!-- Body text from document -->
+            <p class="text-lg md:text-xl font-medium mb-12 max-w-3xl mx-auto animate-fadeIn animation-delay-400 font-karla">
+                Discover how Cloe Madanes—pioneer in the field of coaching and Tony’s longtime collaborator—teaches you to apply his most powerful strategies in your work and life.
+            </p>
+            <!-- Video Placeholder -->
+            <div class="relative w-full aspect-video bg-black rounded-3xl shadow-2xl mb-12 flex items-center justify-center overflow-hidden animate-scaleIn animation-delay-600">
+                <img src="images/videoplaceholder.svg" alt="Promotional video for Robbins-Madanes Training" class="w-full h-full object-cover opacity-70">
+                <svg class="absolute h-20 w-20 md:h-28 md:w-28 text-white opacity-90 transition-transform duration-300 hover:scale-110 cursor-pointer" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3.242-2a1 1 0 000-1.664l-3.242-2z" clip-rule="evenodd"></path></svg>
+            </div>
+            <a href="#book-call" class="btn-primary animate-fadeIn animation-delay-800">BOOK YOUR FREE CALL</a>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="py-24 px-6 md:px-12 bg-white font-karla">
+        <div class="container mx-auto max-w-4xl text-center">
+            <h2 class="text-3xl md:text-5xl font-black mb-6 animate-fadeIn font-lato">Why Good Intentions Aren’t Enough to Create Real Change</h2>
+            <p class="text-lg md:text-xl font-medium text-gray-700 mb-8 max-w-2xl mx-auto animate-fadeIn animation-delay-200">"Dear Coach,"</p>
+            <p class="text-lg md:text-xl font-medium text-gray-700 mb-8 max-w-2xl mx-auto animate-fadeIn animation-delay-400">You’ve always been the person others turn to for advice, insight, or support. And you’re always ready to help. But whether you dream of becoming a professional coach, you are one, or you’re already thriving in another role like teacher, lawyer, consultant, doctor, or leader, you may have felt this frustration:</p>
+            <blockquote class="text-xl md:text-2xl font-semibold mb-8 border-l-4 border-[#4DABCC] pl-6 italic max-w-3xl mx-auto animate-fadeIn animation-delay-600">
+                Your intentions don’t always match your impact.
+            </blockquote>
+            <p class="text-lg md:text-xl font-medium text-gray-700 mb-8 max-w-2xl mx-auto animate-fadeIn animation-delay-800">You share strategies you believe can help. You try to guide clients, students, colleagues, even loved ones… but sometimes, your efforts fall flat.</p>
+            <p class="text-lg md:text-xl font-medium text-gray-700 max-w-2xl mx-auto animate-fadeIn animation-delay-1000">It’s not because you don’t care or don’t have the drive. It’s because most people, no matter how experienced, haven’t learned the precise, proven skills that create deep, lasting change. That’s the difference between offering help… and truly transforming someone’s life.</p>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section class="py-24 px-6 md:px-12 bg-light-gray font-karla">
+        <div class="container mx-auto max-w-5xl">
+            <h2 class="text-3xl md:text-5xl font-black mb-16 text-center animate-fadeIn font-lato">The Ability to Help Others Change on A Deeper Level</h2>
+            <div class="flex flex-col md:flex-row items-center gap-16">
+                <div class="md:w-1/2 animate-fadeIn animation-delay-200">
+                    <img src="images/tonyandchloe.svg" alt="Tony Robbins and Cloe Madanes" class="w-full h-auto rounded-2xl shadow-2xl transform hover:scale-105 transition-transform duration-300">
+                </div>
+                <div class="md:w-1/2 space-y-8 text-lg md:text-xl font-medium animate-fadeIn animation-delay-400">
+                    <p>If you already know how to listen, connect, and care for people… imagine what you could do with the exact strategies that have transformed millions of lives.</p>
+                    <p>As a Robbins-Madanes Trained Coach, you’ll learn Tony Robbins’ most powerful methodologies, broken down step-by-step by his longtime collaborator, world-renowned psychotherapist Cloe Madanes.</p>
+                    <p>You won’t just watch these strategies in action. You’ll understand why they work, how to use them, and how to adapt them to <span class="font-bold text-dark-gray">any</span> situation, whether you’re:</p>
+                    <ul class="list-disc list-inside text-left space-y-2 pl-4">
+                        <li>Launching a coaching career</li>
+                        <li>Elevating your impact as a teacher, lawyer, consultant, social worker, doctor, or leader</li>
+                        <li>Or strengthening relationships in your personal life.</li>
+                    </ul>
+                    <p>Every industry and every community faces complex human challenges. With these skills, you’ll be uniquely equipped to resolve conflict, inspire action, and help people create lasting breakthroughs, while growing in your own life and relationships, too.</p>
+                </div>
+            </div>
+            <div class="text-center mt-16 animate-fadeIn animation-delay-600">
+                <a href="#book-call" class="btn-primary">BOOK YOUR FREE CALL NOW</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- What Happens After You Book a Call Section -->
+    <section class="py-24 px-6 md:px-12 text-center bg-white font-karla">
+        <div class="container mx-auto max-w-4xl">
+            <h2 class="text-3xl md:text-5xl font-black mb-16 animate-fadeIn font-lato">What Happens After You Book a Call</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <!-- Step 1 -->
+                <div class="p-6 bg-light-gray rounded-2xl shadow-md border-t-4 border-primary-blue animate-fadeIn animation-delay-200">
+                    <h3 class="text-xl font-bold mb-2 font-lato">Step 1. Schedule Your Free Discovery Call</h3>
+                    <p class="text-sm text-gray-700">Simply click here to choose the date and time that works best for you. Remember: We have limited slots, so book yours as soon as possible.</p>
+                </div>
+                <!-- Step 2 -->
+                <div class="p-6 bg-light-gray rounded-2xl shadow-md border-t-4 border-primary-blue animate-fadeIn animation-delay-400">
+                    <h3 class="text-xl font-bold mb-2 font-lato">Step 2. Get Your Call Details in Your Confirmation Email</h3>
+                    <p class="text-sm text-gray-700">Immediately after booking, make sure to read your confirmation email and follow the complete instructions on how to easily join the call.</p>
+                </div>
+                <!-- Step 3 -->
+                <div class="p-6 bg-light-gray rounded-2xl shadow-md border-t-4 border-primary-blue animate-fadeIn animation-delay-600">
+                    <h3 class="text-xl font-bold mb-2 font-lato">Step 3. Join Your Free Call and Get Your Next Steps</h3>
+                    <p class="text-sm text-gray-700">Make sure to prepare all your questions ahead to see if our program is right for you. Our Admissions Specialists can’t wait to hear from you!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About the Authors Section (Moved and renamed) -->
+    <section class="py-24 px-6 md:px-12 bg-light-gray font-karla">
+        <div class="container mx-auto max-w-4xl">
+            <h2 class="text-3xl md:text-5xl font-black mb-6 text-center animate-fadeIn font-lato">About the Robbins-Madanes Training School</h2>
+            <div class="text-center mb-16 max-w-3xl mx-auto">
+                <p class="text-lg md:text-xl font-medium text-gray-700 mb-8 animate-fadeIn animation-delay-200">
+                    Robbins-Madanes Training is the official coaching and certification school of Tony Robbins and Cloe Madanes. Since being founded in 2009, we have trained and certified more than 15,000 life coaches around the world. Our mission is to foster a movement of dedicated, compassionate, and professional agents of change who can follow in the footsteps of Tony and Cloe to help make the world a better place for everyone.
+                </p>
+            </div>
+            
+            <h2 class="text-3xl md:text-5xl font-black mb-16 text-center animate-fadeIn animation-delay-400 font-lato">Meet Your Principal Teachers</h2>
+            <div class="flex flex-col lg:flex-row items-center justify-center gap-16">
+                <!-- Tony Robbins -->
+                <div class="flex flex-col items-center text-center lg:w-1/2 animate-fadeIn animation-delay-600">
+                    <!-- Replace the 'src' attribute below with the path to your actual image of Tony Robbins -->
+                    <img src="images/tony.svg" alt="Tony Robbins" class="rounded-full w-48 h-48 mb-6 shadow-xl">
+                    <h3 class="text-3xl font-bold mb-2 font-lato">Tony Robbins</h3>
+                    <p class="text-sm italic text-gray-500 mb-4 font-karla">Entrepreneur & Life Strategist</p>
+                    <p class="text-lg text-gray-700 max-w-md">Tony Robbins is an entrepreneur, #1 New York Times best-selling author, philanthropist, the nation’s #1 life & business strategist, and a pioneer of the coaching industry. For more than four and a half decades, millions of people have enjoyed the warmth, humor, and transformational power of Tony’s business and personal development events.</p>
+                    <!-- To use your actual signature image, replace the 'src' attribute below with the path to your file. -->
+                    <img src="images/tonysignature.svg" alt="Tony's Signature" class="mt-4 w-48">
+                </div>
+                <!-- Cloe Madanes -->
+                <div class="flex flex-col items-center text-center lg:w-1/2 animate-fadeIn animation-delay-800">
+                    <!-- Replace the 'src' attribute below with the path to your actual image of Cloe Madanes -->
+                    <img src="images/chloe.svg" alt="Cloe Madanes" class="rounded-full w-48 h-48 mb-6 shadow-xl">
+                    <h3 class="text-3xl font-bold mb-2 font-lato">Cloe Madanes</h3>
+                    <p class="text-sm italic text-gray-500 mb-4 font-karla">World-Renowned Psychotherapist</p>
+                    <p class="text-lg text-gray-700 max-w-md">Cloe was a direct student of intervention master Milton Erickson and was one of the originators of the strategic approach. She is one of the world’s most respected authorities in the field of psychotherapy and coaching. Her ten books are considered classics in the profession and have been translated into 30 languages. Cloe’s innovations are taught in universities all over the world.</p>
+                    <!-- To use your actual signature image, replace the 'src' attribute below with the path to your file. -->
+                    <img src="images/chloesignature.svg" alt="Cloe's Signature" class="mt-4 w-48">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+<section class="py-24 px-6 md:px-12 bg-[#17494D] text-white relative overflow-hidden">
+    <!-- Animated background gradient -->
+    <div class="absolute inset-0 bg-gradient-to-br from-[#17494D] via-[#1a5158] to-[#17494D] opacity-50"></div>
+    
+    <div class="container mx-auto max-w-6xl relative z-10">
+        <h2 class="text-3xl md:text-5xl font-black mb-16 text-center animate-fadeIn font-lato">HEAR FROM OUR GRADUATES</h2>
+        
+        <!-- Enhanced Testimonial Carousel -->
+        <div class="testimonial-carousel relative">
+            <div class="testimonial-track" id="testimonial-track">
+                <!-- Testimonial 1 -->
+                <div class="testimonial-slide px-4">
+                    <div class="testimonial-card h-full">
+                        <div class="testimonial-content">
+                            <div class="quote-icon">
+                                <svg class="w-8 h-8 text-[#4DABCC] opacity-50" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+                                </svg>
+                            </div>
+                            <div class="testimonial-avatar">
+                                <img src="https://placehold.co/100x100/4DABCC/FFFFFF?text=A.R" alt="Alex R." class="avatar-img">
+                                <div class="avatar-glow"></div>
+                            </div>
+                            <p class="testimonial-text">"This training changed everything for me. I now have the confidence and tools to truly impact people's lives in a meaningful way. It's more than a course; it's a complete transformation."</p>
+                            <div class="testimonial-footer">
+                                <p class="testimonial-name">Alex R.</p>
+                                <p class="testimonial-role">Certified Life Coach</p>
+                                <div class="rating">
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="testimonial-slide px-4">
+                    <div class="testimonial-card h-full">
+                        <div class="testimonial-content">
+                            <div class="quote-icon">
+                                <svg class="w-8 h-8 text-[#4DABCC] opacity-50" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+                                </svg>
+                            </div>
+                            <div class="testimonial-avatar">
+                                <img src="https://placehold.co/100x100/4DABCC/FFFFFF?text=M.G" alt="Maria G." class="avatar-img">
+                                <div class="avatar-glow"></div>
+                            </div>
+                            <p class="testimonial-text">"The curriculum is unmatched. It's not just theory, but real, actionable strategies that you can use immediately. I've seen a noticeable improvement in my client retention and results."</p>
+                            <div class="testimonial-footer">
+                                <p class="testimonial-name">Maria G.</p>
+                                <p class="testimonial-role">Corporate Trainer</p>
+                                <div class="rating">
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="testimonial-slide px-4">
+                    <div class="testimonial-card h-full">
+                        <div class="testimonial-content">
+                            <div class="quote-icon">
+                                <svg class="w-8 h-8 text-[#4DABCC] opacity-50" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+                                </svg>
+                            </div>
+                            <div class="testimonial-avatar">
+                                <img src="https://placehold.co/100x100/4DABCC/FFFFFF?text=J.P" alt="John P." class="avatar-img">
+                                <div class="avatar-glow"></div>
+                            </div>
+                            <p class="testimonial-text">"The live sessions and community support were invaluable. I felt supported every step of the way, and the feedback from mentors was a game changer for my practice."</p>
+                            <div class="testimonial-footer">
+                                <p class="testimonial-name">John P.</p>
+                                <p class="testimonial-role">Business Consultant</p>
+                                <div class="rating">
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 4 -->
+                <div class="testimonial-slide px-4">
+                    <div class="testimonial-card h-full">
+                        <div class="testimonial-content">
+                            <div class="quote-icon">
+                                <svg class="w-8 h-8 text-[#4DABCC] opacity-50" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+                                </svg>
+                            </div>
+                            <div class="testimonial-avatar">
+                                <img src="https://placehold.co/100x100/4DABCC/FFFFFF?text=S.W" alt="Sarah W." class="avatar-img">
+                                <div class="avatar-glow"></div>
+                            </div>
+                            <p class="testimonial-text">"I never thought I could make a career out of helping people, but the business and marketing support from RMT gave me the clear, actionable path I needed to succeed."</p>
+                            <div class="testimonial-footer">
+                                <p class="testimonial-name">Sarah W.</p>
+                                <p class="testimonial-role">Entrepreneur & Coach</p>
+                                <div class="rating">
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 5 -->
+                <div class="testimonial-slide px-4">
+                    <div class="testimonial-card h-full">
+                        <div class="testimonial-content">
+                            <div class="quote-icon">
+                                <svg class="w-8 h-8 text-[#4DABCC] opacity-50" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+                                </svg>
+                            </div>
+                            <div class="testimonial-avatar">
+                                <img src="https://placehold.co/100x100/4DABCC/FFFFFF?text=M.F" alt="Mark F." class="avatar-img">
+                                <div class="avatar-glow"></div>
+                            </div>
+                            <p class="testimonial-text">"The 6 Human Needs model alone is worth the price of admission. It has completely changed how I interact with my team and my family, leading to healthier, more productive relationships."</p>
+                            <div class="testimonial-footer">
+                                <p class="testimonial-name">Mark F.</p>
+                                <p class="testimonial-role">Corporate Executive</p>
+                                <div class="rating">
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Navigation Controls -->
+            <div class="carousel-nav">
+                <button class="carousel-btn carousel-btn-prev" onclick="moveSlide(-1)" aria-label="Previous testimonial">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12 15.75 4.5" />
+                    </svg>
+                </button>
+                <div id="dot-container" class="carousel-dots"></div>
+                <button class="carousel-btn carousel-btn-next" onclick="moveSlide(1)" aria-label="Next testimonial">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- What Makes RMT Unique Section -->
+    <section class="py-24 px-6 md:px-12 bg-white font-karla">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="text-3xl md:text-5xl font-black mb-16 text-center animate-fadeIn font-lato">What Makes Robbins-Madanes Training Unique</h2>
+            <div class="flex flex-col md:flex-row gap-12">
+                <div class="md:w-1/2 flex flex-col justify-center animate-fadeIn animation-delay-200">
+                    <p class="text-xl md:text-2xl font-light italic mb-8">"When you join Robbins-Madanes Training, you’re not just getting another coaching course: you’re stepping into the official training school of Tony Robbins and Cloe Madanes."</p>
+                    <p class="text-lg text-gray-700 mb-8">You’ll be learning the exact strategies Tony uses to create rapid, lasting transformation, with Cloe guiding you through each step so you know how and when to apply them.</p>
+                    <p class="text-lg text-gray-700">Over the course of your training, you’ll receive:</p>
+                </div>
+                <div class="md:w-1/2 grid grid-cols-1 sm:grid-cols-2 gap-8 animate-fadeIn animation-delay-400">
+                    <!-- Feature Cards -->
+                    <div class="bg-light-gray p-8 rounded-2xl shadow-lg border-t-4 border-[#4DABCC]">
+                        <h3 class="font-bold text-xl mb-2 font-lato">Direct Access to Tony’s Coaching Films</h3>
+                        <p class="text-sm text-gray-700">With Cloe’s expert commentary breaking down every move.</p>
+                    </div>
+                    <div class="bg-light-gray p-8 rounded-2xl shadow-lg border-t-4 border-[#4DABCC]">
+                        <h3 class="font-bold text-xl mb-2 font-lato">A Complete Library of Proven Strategies and Tools</h3>
+                        <p class="text-sm text-gray-700">You can adapt to any client, challenge, or setting.</p>
+                    </div>
+                    <div class="bg-light-gray p-8 rounded-2xl shadow-lg border-t-4 border-[#4DABCC]">
+                        <h3 class="font-bold text-xl mb-2 font-lato">Practice Opportunities and Feedback</h3>
+                        <p class="text-sm text-gray-700">So you can build confidence and skill in real-world situations.</p>
+                    </div>
+                    <div class="bg-light-gray p-8 rounded-2xl shadow-lg border-t-4 border-[#4DABCC]">
+                        <h3 class="font-bold text-xl mb-2 font-lato">A Global Community of Coaches</h3>
+                        <p class="text-sm text-gray-700">To share ideas, get advice, and build your network.</p>
+                    </div>
+                    <div class="bg-light-gray p-8 rounded-2xl shadow-lg border-t-4 border-[#4DABCC]">
+                        <h3 class="font-bold text-xl mb-2 font-lato">Business and Marketing Support</h3>
+                        <p class="text-sm text-gray-700">To help you attract clients and grow your practice.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-16 animate-fadeIn animation-delay-600">
+                <a href="#book-call" class="btn-primary">Start Your Journey Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- How RMT Will Support You Section -->
+    <section class="py-24 px-6 md:px-12 bg-light-gray font-karla">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="text-3xl md:text-5xl font-black mb-16 text-center animate-fadeIn font-lato">How RMT Will Support You in Your Journey</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Support feature cards -->
+                <div class="p-8 bg-white rounded-2xl shadow-lg border-t-4 border-[#4DABCC] animate-fadeIn animation-delay-200">
+                    <h3 class="font-bold text-xl mb-2 font-lato">Live Power Sessions with Cloe Madanes and the RMT Faculty</h3>
+                    <p class="text-sm text-gray-700">Get direct guidance from Cloe and our expert team as they walk you through Tony’s methodologies, answer your questions, and help you apply what you’ve learned to real situations.</p>
+                </div>
+                <div class="p-8 bg-white rounded-2xl shadow-lg border-t-4 border-[#4DABCC] animate-fadeIn animation-delay-400">
+                    <h3 class="font-bold text-xl mb-2 font-lato">Interactive Practice Labs</h3>
+                    <p class="text-sm text-gray-700">You’ll have the chance to coach and be coached in structured, supportive practice sessions, so you can build confidence and skill before working with clients.</p>
+                </div>
+                <div class="p-8 bg-white rounded-2xl shadow-lg border-t-4 border-[#4DABCC] animate-fadeIn animation-delay-600">
+                    <h3 class="font-bold text-xl mb-2 font-lato">A Curriculum Built for Real Results</h3>
+                    <p class="text-sm text-gray-700">Our programs are designed around real-world application, not theory alone. You’ll learn proven strategies, watch them in action in Tony’s live interventions, and then practice until you can make them your own.</p>
+                </div>
+                <div class="p-8 bg-white rounded-2xl shadow-lg border-t-4 border-[#4DABCC] animate-fadeIn animation-delay-800">
+                    <h3 class="font-bold text-xl mb-2 font-lato">A Global Community of Coaches</h3>
+                    <p class="text-sm text-gray-700">Connect with thousands of like-minded coaches and professionals around the world. Share insights, troubleshoot challenges, and celebrate wins together.</p>
+                </div>
+                <div class="p-8 bg-white rounded-2xl shadow-lg border-t-4 border-[#4DABCC] animate-fadeIn animation-delay-1000">
+                    <h3 class="font-bold text-xl mb-2 font-lato">Business and Marketing Resources</h3>
+                    <p class="text-sm text-gray-700">From attracting your first clients to scaling your practice, we give you the tools and strategies to build a sustainable coaching business.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Program Curriculum Section -->
+    <section class="py-24 px-6 md:px-12 bg-white font-karla">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="text-3xl md:text-5xl font-black mb-16 text-center animate-fadeIn font-lato">The Program Curriculum</h2>
+            <p class="text-center text-lg md:text-xl max-w-3xl mx-auto mb-12 animate-fadeIn animation-delay-200">"Your training with Robbins-Madanes isn’t just a collection of courses: it’s a complete roadmap for mastering Tony Robbins’ proven coaching methodologies, guided step-by-step by Cloe Madanes."</p>
+            <p class="text-center text-lg md:text-xl max-w-3xl mx-auto mb-12 animate-fadeIn animation-delay-400">From your very first lesson, you’ll see the strategies in action, understand why they work, and know how to apply them in any situation: whether you’re coaching clients, leading teams, or improving your own relationships.</p>
+            <div class="space-y-12">
+                <!-- Curriculum items -->
+                <div class="bg-light-gray p-8 rounded-2xl shadow-lg animate-fadeIn animation-delay-600">
+                    <h3 class="text-2xl font-bold mb-2 text-primary-blue font-lato">Core 100: Foundations of Strategic Coaching</h3>
+                    <p class="font-semibold text-lg mb-4 text-gray-700">(100 hours)</p>
+                    <p class="text-gray-700">Your starting point for mastering Tony Robbins’ most impactful coaching strategies, broken down by Cloe Madanes. You’ll learn how to create breakthroughs for individuals in any life stage, resolve inner conflicts, and apply powerful intervention skills in real time. <span class="font-bold">Outcome: Confidence in applying proven coaching tools with clients, colleagues, and loved ones.</span></p>
+                </div>
+                <div class="bg-light-gray p-8 rounded-2xl shadow-lg animate-fadeIn animation-delay-800">
+                    <h3 class="text-2xl font-bold mb-2 text-primary-blue font-lato">Core 200: Advanced Coaching Mastery</h3>
+                    <p class="font-semibold text-lg mb-4 text-gray-700">(100 hours)</p>
+                    <p class="text-gray-700">Takes you deeper into relationship and family dynamics, advanced negotiation, group coaching, and resilience work. You’ll study Tony’s most challenging interventions (narrated and explained by Cloe), and practice applying them with precision. <span class="font-bold">Outcome: Ability to handle complex coaching scenarios, from marital issues to group conflict.</span></p>
+                </div>
+                <div class="bg-light-gray p-8 rounded-2xl shadow-lg animate-fadeIn animation-delay-1000">
+                    <h3 class="text-2xl font-bold mb-2 text-primary-blue font-lato">Total Breakthrough Training</h3>
+                    <p class="font-semibold text-lg mb-4 text-gray-700">(22 weeks)</p>
+                    <p class="text-gray-700">Specialized training in family and relationship coaching. Learn to address patterns across generations, navigate crises, and create lasting change within family units. <span class="font-bold">Outcome: Skills to help clients rebuild and strengthen their closest relationships.</span></p>
+                </div>
+                <div class="bg-light-gray p-8 rounded-2xl shadow-lg animate-fadeIn animation-delay-1200">
+                    <h3 class="text-2xl font-bold mb-2 text-primary-blue font-lato">Executive Coaching 100 & 200</h3>
+                    <p class="font-semibold text-lg mb-4 text-gray-700">(100 hours each)</p>
+                    <p class="text-gray-700">Learn how to coach high-level leaders on performance, decision-making, and work-life balance. Includes opportunities to practice with real executive clients. <span class="font-bold">Outcome: Confidence to work with CEOs, executives, and leadership teams.</span></p>
+                </div>
+                <div class="bg-light-gray p-8 rounded-2xl shadow-lg animate-fadeIn animation-delay-1400">
+                    <h3 class="text-2xl font-bold mb-2 text-primary-blue font-lato">Working With Women</h3>
+                    <p class="font-semibold text-lg mb-4 text-gray-700">(25 hours)</p>
+                    <p class="text-gray-700">Focused on the unique challenges and strengths of women in personal and professional life. You’ll learn how to help female clients access their strengths, overcome barriers, and thrive. <span class="font-bold">Outcome: Expanded expertise in serving women clients effectively.</span></p>
+                </div>
+                <div class="bg-light-gray p-8 rounded-2xl shadow-lg animate-fadeIn animation-delay-1600">
+                    <h3 class="text-2xl font-bold mb-2 text-primary-blue font-lato">NLP Mastery Program</h3>
+                    <p class="font-semibold text-lg mb-4 text-gray-700">(duration varies)</p>
+                    <p class="text-gray-700">Master advanced language and behavior-change tools, including sensory acuity, submodalities, anchoring, and meta-programs. <span class="font-bold">Outcome: Greater flexibility and precision in influencing positive change.</span></p>
+                </div>
+                <div class="bg-light-gray p-8 rounded-2xl shadow-lg animate-fadeIn animation-delay-1800">
+                    <h3 class="text-2xl font-bold mb-2 text-primary-blue font-lato">Marketing for Coaches</h3>
+                    <p class="font-sm text-gray-700">Step-by-step business-building system designed for coaches. Covers client attraction, offer creation, and sustainable growth strategies. <span class="font-bold">Outcome: Ability to consistently attract and retain coaching clients.</span></p>
+                </div>
+                <div class="bg-light-gray p-8 rounded-2xl shadow-lg animate-fadeIn animation-delay-2000">
+                    <h3 class="text-2xl font-bold mb-2 text-primary-blue font-lato">6 Human Needs</h3>
+                    <p class="font-semibold text-lg mb-4 text-gray-700">(self-paced)</p>
+                    <p class="text-gray-700">Learn Tony Robbins’ core model for understanding human motivation and behavior, and how to use it to create rapid connection and lasting change. <span class="font-bold">Outcome: Deeper insight into what drives people, and how to help them fulfill those needs in healthy ways.</span></p>
+                </div>
+            </div>
+            <div class="text-center mt-16 animate-fadeIn animation-delay-2000">
+                <a href="#book-call" class="btn-primary">Start Your Journey Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bonuses Section -->
+    <section class="py-24 px-6 md:px-12 bg-[#17494D] text-white font-karla">
+        <div class="container mx-auto max-w-4xl text-center">
+            <h2 class="text-3xl md:text-5xl font-black mb-16 animate-fadeIn font-lato">Exclusive Bonuses Included When You Join Today</h2>
+            <div class="space-y-10">
+                <!-- Bonus items -->
+                <div class="p-8 bg-gray-700 bg-opacity-50 rounded-2xl shadow-xl border-l-4 border-primary-blue animate-fadeIn">
+                    <h3 class="text-2xl font-bold mb-2 font-lato">BONUS #1: Working With Women Course and Certification</h3>
+                    <p class="text-lg font-semibold mb-2 text-accent-orange">(worth $390)</p>
+                    <p class="text-lg">Get access to 10 Tony Robbins films focused on the unique needs of women, with Cloe Madanes narrating and explaining each strategy. Complete the training to earn a 25-hour certificate as a Working With Women Coach, an often-overlooked skillset that can transform your practice.</p>
+                </div>
+                <div class="p-8 bg-gray-700 bg-opacity-50 rounded-2xl shadow-xl border-l-4 border-primary-blue animate-fadeIn animation-delay-200">
+                    <h3 class="text-2xl font-bold mb-2 font-lato">BONUS #2: C100 Bonus Room</h3>
+                    <p class="text-lg font-semibold mb-2 text-accent-orange">(worth $2,990)</p>
+                    <p class="text-lg">Unlock a vault of Tony Robbins’ business coaching sessions, personal growth programs, and success films, along with proven marketing strategies. Learn how Tony coaches leaders, deepen your personal mastery, and discover actionable ways to grow your client base.</p>
+                </div>
+                <div class="p-8 bg-gray-700 bg-opacity-50 rounded-2xl shadow-xl border-l-4 border-primary-blue animate-fadeIn animation-delay-400">
+                    <h3 class="text-2xl font-bold mb-2 font-lato">BONUS #3: C200 Bonus Mastery Room</h3>
+                    <p class="text-lg font-semibold mb-2 text-accent-orange">(worth $1,990)</p>
+                    <p class="text-lg">Dive into 70 recorded live interventions from Tony on topics ranging from family conflict to ADHD, plus Cloe’s in-depth Mastery Sessions. A rich library to expand your skills and confidently handle complex coaching challenges.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final Call to Action -->
+    <section id="book-call" class="py-24 px-6 md:px-12 text-center bg-white font-karla">
+        <div class="container mx-auto max-w-4xl">
+            <h2 class="text-3xl md:text-5xl font-black mb-8 animate-fadeIn font-lato">Discover the Next Step to Becoming a Professional Coach</h2>
+            <p class="text-lg md:text-xl mb-8 animate-fadeIn animation-delay-200">Your free 30-minute discovery call is your chance to connect with one of our Robbins-Madanes Training Admissions Advisors, share your goals, and discover the program that’s the perfect fit for you.</p>
+
+            <!-- Book a Call Form Placeholder -->
+            <div class="bg-light-gray p-10 rounded-2xl shadow-inner mb-8 animate-fadeIn animation-delay-400">
+                <p class="text-gray-600 font-bold mb-4 text-xl">-- BOOK A CALL WIDGET HERE --</p>
+                <div class="h-80 flex items-center justify-center bg-gray-300 rounded-lg text-gray-500 text-lg font-semibold">
+                    <p>Calendly/Scheduling Widget Placeholder</p>
+                </div>
+            </div>
+
+            <a href="#book-call" class="btn-primary animate-fadeIn animation-delay-600">BOOK YOUR FREE CALL NOW AND GET ACCESS TO EXCLUSIVE BONUSES→</a>
+            <p class="text-sm italic text-gray-500 mt-8 max-w-2xl mx-auto animate-fadeIn animation-delay-800">Note: We have a limited number of slots each day. If you book a time, please commit to being there—or let us know if you can’t so we can offer the spot to someone else.</p>
+        </div>
+    </section>
+
+    <!-- FAQ Section (Updated to accordion) -->
+    <section class="py-24 px-6 md:px-12 bg-light-gray font-karla">
+        <div class="container mx-auto max-w-4xl">
+            <h2 class="text-3xl md:text-5xl font-black mb-16 text-center animate-fadeIn font-lato">Frequently Asked Questions</h2>
+            <div class="space-y-6">
+                <!-- FAQ Item 1 -->
+                <div class="accordion-item animate-fadeIn animation-delay-200">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <h3 class="font-bold text-lg font-lato">How exactly does this program work? Will I have the time?</h3>
+                        <svg class="w-6 h-6 accordion-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Each program is a hybrid learning experience designed for flexibility. You'll engage with self-paced online modules, attend live coaching calls with Cloe and the faculty, and participate in interactive practice sessions. This structure allows you to fit the training around your current work and life commitments. Many of our students are professionals, entrepreneurs, and parents who successfully complete the program while maintaining a busy schedule.</p>
+                    </div>
+                </div>
+                <!-- FAQ Item 2 -->
+                <div class="accordion-item animate-fadeIn animation-delay-400">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <h3 class="font-bold text-lg font-lato">What is expected of me when I join?</h3>
+                        <svg class="w-6 h-6 accordion-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                    <div class="accordion-content">
+                        <p>We ask that you bring your full commitment to the process. To get the most out of the training, you should be ready to engage with the video lessons, actively participate in live sessions, and complete the practice activities. Our faculty and community are here to support you every step of the way, so your primary role is to show up, be open to learning, and apply the tools you're given.</p>
+                    </div>
+                </div>
+                <!-- FAQ Item 3 -->
+                <div class="accordion-item animate-fadeIn animation-delay-600">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <h3 class="font-bold text-lg font-lato">Do I need prior coaching experience?</h3>
+                        <svg class="w-6 h-6 accordion-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Not at all. Our programs are designed to be accessible and impactful for everyone, from individuals with no coaching experience to seasoned professionals in other fields (like doctors, lawyers, and teachers) who want to add powerful new skills to their toolkit. The curriculum starts with the foundations and builds progressively, ensuring you're ready for every step of the journey.</p>
+                    </div>
+                </div>
+                <!-- FAQ Item 4 -->
+                <div class="accordion-item animate-fadeIn animation-delay-800">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <h3 class="font-bold text-lg font-lato">Is the program accredited?</h3>
+                        <svg class="w-6 h-6 accordion-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Yes. Robbins-Madanes Training is accredited by the International Coaching Federation (ICF). Our programs meet and exceed the rigorous standards for coach training and certification, ensuring that your training and certification are recognized globally.</p>
+                    </div>
+                </div>
+                <!-- FAQ Item 5 -->
+                <div class="accordion-item animate-fadeIn animation-delay-1000">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <h3 class="font-bold text-lg font-lato">How much does the program cost?</h3>
+                        <svg class="w-6 h-6 accordion-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                    <div class="accordion-content">
+                        <p>The total investment for our programs varies depending on which curriculum path you choose. During your free discovery call, an Admissions Advisor will work with you to understand your goals and provide a clear breakdown of the costs, available payment plans, and any exclusive offers.</p>
+                    </div>
+                </div>
+                <!-- FAQ Item 6 -->
+                <div class="accordion-item animate-fadeIn animation-delay-1200">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <h3 class="font-bold text-lg font-lato">What if I’m not sure which program is right for me?</h3>
+                        <svg class="w-6 h-6 accordion-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                    <div class="accordion-content">
+                        <p>That’s exactly what your free discovery call is for. Our Admissions Advisors are trained to listen to your unique goals and professional background. They will provide a personalized recommendation on the best program to start with, ensuring you have the right roadmap for your success.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-12 px-6 md:px-12 bg-[#17494D] text-gray-400 text-center text-sm font-karla">
+        <div class="container mx-auto max-w-4xl">
+            <p>&copy; 2025 Robbins-Madanes Training. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const track = document.getElementById('testimonial-track');
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.testimonial-slide');
+        const totalSlides = slides.length;
+        const dotContainer = document.getElementById('dot-container');
+        let intervalId;
+
+        // Create dots
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            dot.addEventListener('click', () => {
+                currentSlide = i;
+                updateCarousel();
+                resetInterval();
+            });
+            dotContainer.appendChild(dot);
+        }
+
+        function updateCarousel() {
+            const slideWidth = slides[0].offsetWidth;
+            const isMobile = window.innerWidth < 768;
+            let offset;
+            
+            if (isMobile) {
+                // For mobile, show one slide at a time
+                offset = -currentSlide * slideWidth;
+            } else {
+                // For desktop, show one slide at a time
+                offset = -currentSlide * slideWidth;
+            }
+
+            track.style.transform = `translateX(${offset}px)`;
+
+            // Update dots
+            document.querySelectorAll('.dot').forEach((dot, index) => {
+                if (index === currentSlide) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        function moveSlide(direction) {
+            currentSlide += direction;
+            if (currentSlide < 0) {
+                currentSlide = totalSlides - 1;
+            } else if (currentSlide >= totalSlides) {
+                currentSlide = 0;
+            }
+            updateCarousel();
+        }
+
+        function resetInterval() {
+            clearInterval(intervalId);
+            intervalId = setInterval(() => {
+                moveSlide(1);
+            }, 5000);
+        }
+
+        // Initial setup
+        updateCarousel();
+        resetInterval();
+
+        // Update the carousel on window resize
+        window.addEventListener('resize', () => {
+            updateCarousel();
+        });
+
+        // --- FAQ Accordion Script ---
+        function toggleAccordion(header) {
+            const content = header.nextElementSibling;
+            const icon = header.querySelector('.accordion-icon');
+            
+            // Close all other active items
+            document.querySelectorAll('.accordion-header.active').forEach(item => {
+                if (item !== header) {
+                    item.classList.remove('active');
+                    item.nextElementSibling.classList.remove('active');
+                }
+            });
+            
+            // Toggle the clicked item
+            header.classList.toggle('active');
+            content.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
